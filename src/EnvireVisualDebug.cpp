@@ -28,6 +28,8 @@
 
 #include "EnvireVisualDebug.hpp"
 
+#include <mars/plugins/envire_managers/EnvireStorageManager.hpp>
+
 namespace mars {
   namespace plugins {
     namespace envire_visual_debug {
@@ -38,13 +40,13 @@ namespace mars {
         EnvireVisualDebug::EnvireVisualDebug(lib_manager::LibManager *theManager)
         : MarsPluginTemplateGUI(theManager, "EnvireVisualDebug"),
         timeSinceLastUiUpdate(0) {
-
             graphWindow = new envire::viz::EnvireVisualizerWindow();
         }
-  
+
         void EnvireVisualDebug::init() {
-            timeSinceLastUiUpdate = 0;
-            gui->addGenericMenuAction("../EnvireVisualDebug/showEnvireGraph", 1, this);
+          std::cout << "EnvireVisualDebug::init()" << std::endl;
+          timeSinceLastUiUpdate = 0;
+          gui->addGenericMenuAction("../EnvireVisualDebug/showEnvireGraph", 1, this);
         }
 
       void EnvireVisualDebug::reset() {
@@ -54,7 +56,7 @@ namespace mars {
       }
 
 
-        void EnvireVisualDebug::update(sReal time_ms) 
+        void EnvireVisualDebug::update(sReal time_ms)
         {
             if(graphWindow->isVisible())
             {
@@ -69,7 +71,7 @@ namespace mars {
 
       void EnvireVisualDebug::menuAction (int action, bool checked)
       {
-            graphWindow->displayGraph(control->graph, "center");
+            graphWindow->displayGraph(mars::plugins::envire_managers::EnvireStorageManager::instance()->getGraph(), "center");
             graphWindow->show();
       }
 
