@@ -21,6 +21,7 @@
 /**
  * \file EnvireVisualDebug.h
  * \author Raul (Raul.Dominguez@dfki.de)
+ * \author Anna Born (anna.born@dfki.de)
  * \brief Debug
  *
  * Version 0.1
@@ -38,7 +39,6 @@
 #include <string>
 
 namespace mars {
-
   namespace plugins {
     namespace envire_visual_debug {
 
@@ -48,35 +48,29 @@ namespace mars {
         public mars::main_gui::MenuInterface,
         public mars::cfg_manager::CFGClient {
 
-      public:
-        EnvireVisualDebug(lib_manager::LibManager *theManager);
-        ~EnvireVisualDebug();
+          public:
+            EnvireVisualDebug(lib_manager::LibManager *theManager);
+            ~EnvireVisualDebug();
 
-        // LibInterface methods
-        int getLibVersion() const
-        { return 1; }
-        const std::string getLibName() const
-        { return std::string("envire_visual_debug"); }
-        CREATE_MODULE_INFO();
+            // LibInterface methods
+            int getLibVersion() const { return 1; }
+            const std::string getLibName() const { return std::string("envire_visual_debug"); }
+            CREATE_MODULE_INFO();
 
-        // MarsPlugin methods
-        void init();
-        void reset();
-        void update(mars::interfaces::sReal time_ms);
+            // MarsPlugin methods
+            void init();
+            void reset();
+            void update(mars::interfaces::sReal time_ms);
 
-      private:
+          private:
 
-        double timeSinceLastUiUpdate;
-        // MenuInterface methods
-        void menuAction(int action, bool checked = false);
+            double timeSinceLastUiUpdate;
+            // MenuInterface methods
+            void menuAction(int action, bool checked = false);
 
-        envire::viz::EnvireVisualizerWindow *graphWindow;
+            envire::viz::EnvireVisualizerWindow *graphWindow;
 
       }; // end of class definition EnvireVisualDebug
-
-
-
-
     } // end of namespace visual
   } // end of namespace plugins
 } // end of namespace mars

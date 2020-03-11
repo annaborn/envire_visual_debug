@@ -21,6 +21,7 @@
 /**
  * \file EnvireVisualDebug.cpp
  * \author Raul (Raul.Dominguez@dfki.de)
+ * \author Anna Born (anna.born@dfki.de)
  * \brief Debug
  *
  * Version 0.1
@@ -30,54 +31,45 @@
 
 #include <mars/plugins/envire_managers/EnvireStorageManager.hpp>
 
-namespace mars {
-  namespace plugins {
-    namespace envire_visual_debug {
+using namespace mars::plugins::envire_visual_debug;
+using namespace mars::plugins::envire_managers;
 
-      using namespace mars::utils;
-      using namespace mars::interfaces;
+using namespace mars::utils;
+using namespace mars::interfaces;
 
-        EnvireVisualDebug::EnvireVisualDebug(lib_manager::LibManager *theManager)
-        : MarsPluginTemplateGUI(theManager, "EnvireVisualDebug"),
-        timeSinceLastUiUpdate(0) {
-            graphWindow = new envire::viz::EnvireVisualizerWindow();
-        }
+EnvireVisualDebug::EnvireVisualDebug(lib_manager::LibManager *theManager)
+  : MarsPluginTemplateGUI(theManager, "EnvireVisualDebug"),
+  timeSinceLastUiUpdate(0) {
+    graphWindow = new envire::viz::EnvireVisualizerWindow();
+}
 
-        void EnvireVisualDebug::init() {
-          std::cout << "EnvireVisualDebug::init()" << std::endl;
-          timeSinceLastUiUpdate = 0;
-          gui->addGenericMenuAction("../EnvireVisualDebug/showEnvireGraph", 1, this);
-        }
+void EnvireVisualDebug::init() {
+  timeSinceLastUiUpdate = 0;
+  gui->addGenericMenuAction("../EnvireVisualDebug/showEnvireGraph", 1, this);
+}
 
-      void EnvireVisualDebug::reset() {
-      }
+void EnvireVisualDebug::reset() {}
 
-      EnvireVisualDebug::~EnvireVisualDebug() {
-      }
+EnvireVisualDebug::~EnvireVisualDebug() {}
 
-
-        void EnvireVisualDebug::update(sReal time_ms)
+void EnvireVisualDebug::update(sReal time_ms)
+{
+    if(graphWindow->isVisible())
+    {
+        timeSinceLastUiUpdate += time_ms;
+        if(timeSinceLastUiUpdate > 33) //=> 30 fps
         {
-            if(graphWindow->isVisible())
-            {
-                timeSinceLastUiUpdate += time_ms;
-                if(timeSinceLastUiUpdate > 33) //=> 30 fps
-                {
-                    timeSinceLastUiUpdate = 0;
-                    graphWindow->redraw();
-                }
-            }
+            timeSinceLastUiUpdate = 0;
+            graphWindow->redraw();
         }
+    }
+}
 
-      void EnvireVisualDebug::menuAction (int action, bool checked)
-      {
-            graphWindow->displayGraph(mars::plugins::envire_managers::EnvireStorageManager::instance()->getGraph(), "center");
-            graphWindow->show();
-      }
-
-    } // end of namespace envire_visual_debug
-  } // end of namespace plugins
-} // end of namespace mars
+void EnvireVisualDebug::menuAction (int action, bool checked)
+{
+      graphWindow->displayGraph(EnvireStorageManager::instance()->getGraph(), "center");
+      graphWindow->show();
+}
 
 DESTROY_LIB(mars::plugins::envire_visual_debug::EnvireVisualDebug);
 CREATE_LIB(mars::plugins::envire_visual_debug::EnvireVisualDebug);
