@@ -13,6 +13,7 @@ pkg_check_modules(PKGCONFIG REQUIRED
 			    lib_manager
 				envire_visualizer
 				envire_managers
+				configmaps
 )
 include_directories(${PKGCONFIG_INCLUDE_DIRS})
 link_directories(${PKGCONFIG_LIBRARY_DIRS})
@@ -20,6 +21,8 @@ add_definitions(${PKGCONFIG_CFLAGS_OTHER})  #flags excluding the ones with -I
 
 add_subdirectory(src)
 add_library(${PROJECT_NAME} SHARED ${SOURCES})
+
+find_package(lib_manager)
 
 setup_qt()
 
