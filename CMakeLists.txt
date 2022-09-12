@@ -11,6 +11,7 @@ define_module_info()
 
 pkg_check_modules(PKGCONFIG REQUIRED
 			    lib_manager
+				mars_interfaces
 				envire_visualizer
 				envire_managers
 				configmaps
