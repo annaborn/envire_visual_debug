@@ -67,7 +67,8 @@ void EnvireVisualDebug::update(sReal time_ms)
 
 void EnvireVisualDebug::menuAction (int action, bool checked)
 {
-      graphWindow->displayGraph(EnvireStorageManager::instance()->getGraph(), "center");
+
+      graphWindow->displayGraph(control->storage->getGraph(), "center");
       graphWindow->show();
 }
 
